@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glendira Glow Collective | Modern Filipino Apparel – Batangas</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #8b4d1b;
+      --accent: #fcd46e;
+      --dark: #312a22;
+      --light: #faf6ee;
+      --shadow: 0 7px 30px 0 rgba(139,77,27,0.13);
+      --radius: 1.4rem;
+    }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.7;
+      transition: background 0.4s;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color .22s;
+    }
+    a:hover { color: var(--accent); }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: .7rem;
+    }
+    button, input {
+      font-family: inherit;
+      outline: none;
+      border: none;
+      background: none;
+    }
+    .header {
+      width: 100%;
+      background: rgba(255,255,255,0.96);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      backdrop-filter: blur(7px);
+      transition: background .3s;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.15rem 2.1rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      font-family: 'Playfair Display', serif;
+    }
+    .nav-logo img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px 0 rgba(139,77,27,0.08);
+    }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 2.1rem;
+      list-style: none;
+    }
+    .nav-link {
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.2rem 0;
+      position: relative;
+      letter-spacing: 0.5px;
+      transition: color .2s;
+    }
+    .nav-link.active,
+    .nav-link:hover { color: var(--primary); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+    .nav-toggle {
+      display: none;
+      font-size: 2.1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--primary);
+      margin-left: 1rem;
+      z-index: 200;
+    }
+    .floating-cart-btn {
+      position: fixed;
+      left: 32px;
+      bottom: 32px;
+      z-index: 150;
+      background: var(--primary);
+      color: var(--light);
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      box-shadow: 0 2px 14px 0 rgba(139,77,27,0.16);
+      cursor: pointer;
+      border: none;
+      transition: background .2s, color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .floating-cart-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    @media (max-width: 500px) {
+      .floating-cart-btn {
+        left: 10px;
+        bottom: 10px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.5rem;
+      }
+    }
+    .cart-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(139,77,27,0.13);
+      z-index: 100;
+      display: none;
+    }
+    .cart-overlay.active { display: block; }
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 360px;
+      max-width: 99vw;
+      height: 100%;
+      background: var(--light);
+      box-shadow: -2px 0 20px 0 rgba(139,77,27,0.14);
+      z-index: 101;
+      padding: 2.1rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      transition: right .28s;
+      overflow-y: auto;
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .cart-sidebar-title {
+      font-size: 1.13rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+    .cart-sidebar-close {
+      font-size: 1.7rem;
+      color: var(--primary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color .2s;
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      border-bottom: 1px solid #fcd46e;
+      padding-bottom: 1rem;
+    }
+    .cart-item-img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      border-radius: .6rem;
+      background: #ffefa6;
+    }
+    .cart-item-details { flex: 1; }
+    .cart-item-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .12rem;
+    }
+    .cart-item-price {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: .12rem;
+      font-size: 0.97rem;
+    }
+    .cart-item-qty {
+      display: flex; align-items: center; gap: .4rem; margin-top: .18rem;
+    }
+    .cart-item-qty-btn {
+      font-size: 1.07rem;
+      background: var(--light);
+      border-radius: .3rem;
+      padding: 2px 7px;
+      cursor: pointer;
+      color: var(--primary);
+      border: 1px solid var(--accent);
+      transition: background .2s, color .2s;
+    }
+    .cart-item-qty-btn:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+    .cart-item-remove {
+      color: #d21f3c;
+      font-size: 1.13rem;
+      margin-left: .5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color .2s;
+    }
+    .cart-sidebar-footer {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .cart-sidebar-footer .checkout-btn {
+      padding: 0.62rem 1.32rem;
+      background: var(--primary);
+      color: var(--light);
+      border-radius: .55rem;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .cart-sidebar-footer .checkout-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    main {
+      max-width: 1145px;
+      margin: 0 auto;
+      padding: 2.2rem 1.2rem 3rem;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.7rem;
+      background: linear-gradient(rgba(139,77,27,.74),rgba(252,212,110,.07)), url('image/placeholder.png') center/cover;
+      border-radius: var(--radius);
+      padding: 2.5rem 2.6rem;
+      margin-bottom: 2.3rem;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+      min-height: 320px;
+    }
+    .hero-content {
+      flex: 1 1 280px;
+      min-width: 260px;
+      z-index: 2;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--light);
+      line-height: 1.13;
+      margin-bottom: 1.18rem;
+      letter-spacing: 1.2px;
+      text-shadow: 0 2px 10px rgba(139,77,27,0.13);
+    }
+    .hero-desc {
+      color: #fff3c1;
+      font-size: 1.12rem;
+      margin-bottom: 1.5rem;
+      max-width: 510px;
+      text-shadow: 0 2px 10px rgba(139,77,27,0.11);
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1.05rem;
+    }
+    .btn-primary, .btn-secondary {
+      padding: 0.85rem 2.2rem;
+      font-size: 1.11rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
+      box-shadow: 0 2px 12px 0 rgba(139,77,27,0.14);
+      outline: none; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 1.1px;
+    }
+    .btn-primary:hover {
+      background: var(--dark); color: var(--accent);
+    }
+    .btn-secondary {
+      background: var(--light);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+    .hero-img-container {
+      min-width: 230px;
+      flex: 1 1 220px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      z-index: 1;
+    }
+    .hero-img {
+      width: 320px;
+      max-width: 100%;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 22px 0 rgba(139,77,27,.12);
+      background: #ffefa6;
+      object-fit: contain;
+      opacity: 0.97;
+    }
+    .section-title {
+      font-size: 2rem;
+      color: var(--primary);
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 1.6rem;
+      margin-top: .9rem;
+      letter-spacing: 0.8px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.3rem;
+    }
+    .product-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.15rem 1.05rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform .18s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card:hover {
+      box-shadow: 0 16px 36px 0 rgba(139,77,27,.16);
+      transform: translateY(-7px) scale(1.035);
+    }
+    .product-img {
+      width: 115px;
+      height: 115px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      background: #ffefa6;
+      border-radius: .67rem;
+      transition: transform .23s;
+    }
+    .product-card:hover .product-img {
+      transform: scale(1.06) rotate(-2deg);
+    }
+    .product-name {
+      font-weight: 900;
+      font-size: 1.12rem;
+      text-align: center;
+      margin-bottom: .3rem;
+      font-family: 'Poppins', 'Montserrat', sans-serif;
+    }
+    .product-desc {
+      font-size: 1.01rem;
+      color: #8b4d1b;
+      margin-bottom: 0.53rem;
+      text-align: center;
+      letter-spacing: 0.17px;
+    }
+    .product-stock {
+      font-size: 0.97rem;
+      margin-bottom: 0.18rem;
+      color: var(--primary);
+    }
+    .product-price {
+      font-weight: 700;
+      font-size: 1.16rem;
+      color: var(--primary);
+      margin-bottom: .79rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .product-add {
+      background: var(--primary);
+      color: var(--light);
+      border-radius: .44rem;
+      padding: 0.64rem 1.24rem;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 1.01rem;
+      border: none;
+      transition: background .2s;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .product-add:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .product-badge {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+      background: var(--accent);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: .91rem;
+      padding: 0.16rem 0.61rem;
+      border-radius: .6rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px 0 rgba(252,212,110,0.08);
+    }
+    .info-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+    .info-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.32rem 1.05rem;
+      min-width: 230px;
+      flex: 1 1 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 390px;
+    }
+    .info-icon {
+      font-size: 2.1rem;
+      color: var(--primary);
+      margin-bottom: 0.7rem;
+    }
+    .info-title {
+      font-size: 1.11rem;
+      font-weight: 900;
+      margin-bottom: .32rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .info-desc {
+      color: #7a4f2e;
+      font-size: 1.01rem;
+    }
+    .policy-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 1.6rem 0;
+      justify-content: center;
+    }
+    .policy-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.15rem 1rem;
+      min-width: 230px;
+      flex: 1 1 210px;
+      max-width: 360px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+    .policy-title {
+      font-size: 1.13rem;
+      font-weight: 900;
+      margin-bottom: .54rem;
+      color: var(--primary);
+      font-family: 'Poppins', sans-serif;
+    }
+    .policy-body {
+      color: #7a4f2e;
+      font-size: 1.01rem;
+      line-height: 1.7;
+    }
+    .footer {
+      background: var(--dark);
+      color: var(--light);
+      padding: 2.1rem 0 1rem;
+      margin-top: 2.4rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -40px;
+      width: 320px;
+      height: 320px;
+      opacity: 0.13;
+      background: url('image/LOGO.png') no-repeat center center/contain;
+      z-index: 0;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-brand {
+      flex: 1 1 230px;
+      margin-bottom: 1.8rem;
+      z-index: 2;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.13rem;
+      font-weight: 900;
+      gap: .53rem;
+      margin-bottom: 0.42rem;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+    .footer-logo img {
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+    }
+    .footer-desc {
+      color: #fcd46e;
+      font-size: 1.01rem;
+      margin-bottom: .57rem;
+    }
+    .footer-links-group {
+      flex: 1 1 160px;
+      margin-bottom: 1.7rem;
+      z-index: 2;
+    }
+    .footer-links-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: .32rem;
+      letter-spacing: .5px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .footer-link {
+      color: #ffe9bd;
+      font-size: .99rem;
+      transition: color .2s;
+      opacity: .92;
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      text-align: center;
+      font-size: .97rem;
+      color: #ffe9bd;
+      margin-top: 1.3rem;
+      opacity: .86;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-bottom a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      transition: color .2s;
+    }
+    .footer-bottom a:hover { color: var(--accent); }
+    .scroll-top-btn {
+      position: fixed;
+      right: 28px;
+      bottom: 32px;
+      z-index: 151;
+      background: var(--accent);
+      color: var(--primary);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.65rem;
+      box-shadow: 0 2px 12px 0 rgba(139,77,27,0.15);
+      cursor: pointer;
+      border: none;
+      transition: background .22s, color .22s, opacity .22s;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .scroll-top-btn.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 1100px) {
+      .hero { flex-direction: column; text-align: center; }
+      .hero-content, .hero-img-container { justify-content: center; }
+      .hero-img { margin: 1.6rem auto 0 auto; }
+    }
+    @media (max-width: 900px) {
+      .nav-list { gap: 1.05rem; }
+      .footer-container { flex-direction: column; gap: 1.6rem; align-items: flex-start; }
+    }
+    @media (max-width: 700px) {
+      .nav { padding: 1rem .75rem; }
+      .main { padding: 1rem .6rem 2rem; }
+      .products-grid,
+      .info-sections,
+      .policy-sections { gap: 1rem; }
+      .footer-container { padding: 0 1.2rem; }
+      .nav-list {
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        width: 82vw;
+        height: 100vh;
+        background: var(--light);
+        flex-direction: column;
+        gap: 1.7rem;
+        padding-top: 4.1rem;
+        z-index: 120;
+        transition: right .25s;
+        box-shadow: -2px 0 20px 0 rgba(139,77,27,0.09);
+      }
+      .nav-list.open { right: 0; }
+      .nav-toggle { display: block; }
+      .nav-close { display: none; }
+      .nav-list .nav-close {
+        display: block;
+        position: absolute;
+        top: 1.1rem;
+        right: 1.3rem;
+        background: none;
+        border: none;
+        font-size: 1.72rem;
+        color: var(--primary);
+        cursor: pointer;
+        z-index: 999;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 1.05rem .7rem; }
+      .policy-card { padding: 1rem .45rem; }
+      .footer { padding: 1.11rem 0 .89rem; }
+    }
+    @media (max-width: 430px) {
+      .cart-sidebar { width: 99vw; padding: .95rem .45rem; }
+      .footer-logo img { width: 21px; height: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Glendira Glow Collective Logo" />
+        Glendira Glow Collective
+      </a>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="#shop" class="nav-link">Products</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <button class="nav-close" id="nav-close" aria-label="Close menu"><i class="ri-close-line"></i></button>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu"><i class="ri-menu-3-line"></i></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Floating Cart Button -->
+  <button class="floating-cart-btn" id="cart-btn" aria-label="Open cart">
+    <i class="ri-shopping-bag-3-line"></i>
+    <span id="cart-badge" style="position:absolute;top:8px;right:8px;background:var(--accent);color:var(--primary);font-size:.9rem;font-weight:700;border-radius:50%;padding:2px 8px;min-width:24px;text-align:center;display:none"></span>
+  </button>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="Scroll to top">
+    <i class="ri-arrow-up-s-line"></i>
+  </button>
+
+  <!-- Cart Sidebar & Overlay -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar" aria-label="Shopping cart">
+    <div class="cart-sidebar-header">
+      <div class="cart-sidebar-title">My Cart</div>
+      <button class="cart-sidebar-close" id="cart-close-btn" aria-label="Close cart"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be rendered here by JS -->
+    </div>
+    <div class="cart-sidebar-footer">
+      <span><span id="cart-items-count">0</span> items | <span id="cart-total">₱0</span></span>
+      <button class="checkout-btn" id="checkout-btn">Checkout</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Glendira Glow Collective <span style="color:var(--accent)"></span></h1>
+        <div class="hero-desc">
+          Your trusted source for stylish, modern, and affordable clothing in Batangas.<br>
+          At Glendira Glow Collective, we believe every Filipino deserves to feel confident in what they wear — for work, casual days, or special occasions.<br><br>
+          <strong style="color:var(--accent)">Local passion, global trends. Apparel that's fashionable, comfy, and sulit na sulit.</strong>
+          <br>Visit us in Lobo, Batangas, or shop conveniently online.
+        </div>
+        <div class="hero-btns">
+          <a href="#shop" class="btn-primary">Shop Now</a>
+          <a href="#about" class="btn-secondary">About Us</a>
+        </div>
+      </div>
+      <div class="hero-img-container">
+        <img src="image/placeholder.png" alt="Glendira Glow Collective Banner" class="hero-img" />
+      </div>
+    </section>
+
+    <!-- About Us -->
+    <section class="info-sections" id="about">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-star-line"></i></div>
+        <div class="info-title">Our Story</div>
+        <div class="info-desc">
+          Founded by Glenda Perez Ariola, Glendira Glow Collective began as a small community shop in Lobo, Batangas.<br>
+          Inspired by Filipino resilience and creativity, we built our brand on quality apparel, fair pricing, and customer care.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-heart-line"></i></div>
+        <div class="info-title">Our Mission</div>
+        <div class="info-desc">
+          To provide stylish, affordable apparel for every Filipino.<br>
+          To support local suppliers and promote sustainable clothing practices.<br>
+          To create a brand rooted in Filipino culture and hospitality.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-hand-heart-line"></i></div>
+        <div class="info-title">Our Values</div>
+        <div class="info-desc">
+          Honesty: We stand behind every product.<br>
+          Service: Customers are our priority (“Mahal kayo ng Glendira!”).<br>
+          Innovation: Always updated with trends to keep you glowing.
+        </div>
+      </div>
+    </section>
+
+    <!-- Products & Collections -->
+    <section id="shop">
+      <h2 class="section-title">Products & Collections</h2>
+      <div class="products-grid" id="products-grid">
+        <div class="product-card" data-id="1">
+          <span class="product-badge">Qty: 10</span>
+          <img src="image/placeholder.png" alt="Everyday T-shirt" class="product-img" />
+          <div class="product-name">Everyday T-shirt</div>
+          <div class="product-desc">Comfy, basic, perfect for all-day wear.</div>
+          <div class="product-price">₱199.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="2">
+          <span class="product-badge">Qty: 7</span>
+          <img src="image/placeholder.png" alt="Office Blazer" class="product-img" />
+          <div class="product-name">Office Blazer (Women)</div>
+          <div class="product-desc">Smart, local-made, lightweight, stylish.</div>
+          <div class="product-price">₱799.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="3">
+          <span class="product-badge">Qty: 5</span>
+          <img src="image/placeholder.png" alt="Filipiniana Dress" class="product-img" />
+          <div class="product-name">Filipiniana Dress</div>
+          <div class="product-desc">Modern Filipino-inspired. For events & occasions.</div>
+          <div class="product-price">₱1099.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="4">
+          <span class="product-badge">Qty: 8</span>
+          <img src="image/placeholder.png" alt="Men's Polo" class="product-img" />
+          <div class="product-name">Men's Polo Shirt</div>
+          <div class="product-desc">Crisp, classic fit. For work or casual.</div>
+          <div class="product-price">₱349.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="5">
+          <span class="product-badge">Qty: 15</span>
+          <img src="image/placeholder.png" alt="Teens Graphic Tee" class="product-img" />
+          <div class="product-name">Teens Graphic Tee</div>
+          <div class="product-desc">Trendy, expressive, for Gen Z & Alpha!</div>
+          <div class="product-price">₱239.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="6">
+          <span class="product-badge">Qty: 11</span>
+          <img src="image/placeholder.png" alt="A-Line Skirt" class="product-img" />
+          <div class="product-name">A-Line Skirt</div>
+          <div class="product-desc">Versatile, local-made, easy to style.</div>
+          <div class="product-price">₱399.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="7">
+          <span class="product-badge">Qty: 9</span>
+          <img src="image/placeholder.png" alt="Kids Dress" class="product-img" />
+          <div class="product-name">Kids Dress</div>
+          <div class="product-desc">Playful, soft, easy to wear for any event.</div>
+          <div class="product-price">₱299.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="8">
+          <span class="product-badge">Qty: 6</span>
+          <img src="image/placeholder.png" alt="Seasonal Bomber Jacket" class="product-img" />
+          <div class="product-name">Seasonal Bomber Jacket</div>
+          <div class="product-desc">Limited run, warm, and bold look.</div>
+          <div class="product-price">₱899.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="9">
+          <span class="product-badge">Qty: 13</span>
+          <img src="image/placeholder.png" alt="Men's Shorts" class="product-img" />
+          <div class="product-name">Men's Cotton Shorts</div>
+          <div class="product-desc">Breathable, summer-friendly. All-day comfort.</div>
+          <div class="product-price">₱269.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="10">
+          <span class="product-badge">Qty: 7</span>
+          <img src="image/placeholder.png" alt="Women's Office Dress" class="product-img" />
+          <div class="product-name">Women's Office Dress</div>
+          <div class="product-desc">Professional look, modern cut, comfy.</div>
+          <div class="product-price">₱499.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="11">
+          <span class="product-badge">Qty: 12</span>
+          <img src="image/placeholder.png" alt="Handbag" class="product-img" />
+          <div class="product-name">Classic Handbag</div>
+          <div class="product-desc">Elegant and versatile for any season.</div>
+          <div class="product-price">₱599.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="12">
+          <span class="product-badge">Qty: 14</span>
+          <img src="image/placeholder.png" alt="Jewelry Set" class="product-img" />
+          <div class="product-name">Minimalist Jewelry Set</div>
+          <div class="product-desc">Affordable, hypoallergenic, Filipino design.</div>
+          <div class="product-price">₱149.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="13">
+          <span class="product-badge">Qty: 10</span>
+          <img src="image/placeholder.png" alt="Kids Jogger Pants" class="product-img" />
+          <div class="product-name">Kids Jogger Pants</div>
+          <div class="product-desc">Comfy, durable, great for active kids!</div>
+          <div class="product-price">₱199.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="14">
+          <span class="product-badge">Qty: 8</span>
+          <img src="image/placeholder.png" alt="Women's Crop Top" class="product-img" />
+          <div class="product-name">Women's Crop Top</div>
+          <div class="product-desc">Trendy fit, easy to pair for any occasion.</div>
+          <div class="product-price">₱179.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="15">
+          <span class="product-badge">Qty: 5</span>
+          <img src="image/placeholder.png" alt="Premium Face Mask" class="product-img" />
+          <div class="product-name">Premium Fabric Face Mask</div>
+          <div class="product-desc">Reusable, comfortable, and fashionable.</div>
+          <div class="product-price">₱69.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="info-sections" id="testimonials">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Super ganda ng quality, hindi nag-fade kahit ilang laba. Sulit na sulit!” – Maricel R., Batangas
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Friendly staff and mabilis ang delivery. Recommended talaga!” – Carlo D., Quezon City
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “I love how their designs mix comfort with style. Para akong laging handa sa OOTD!” – Jen P., Cavite
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="info-sections" id="faq">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you deliver outside Batangas?</div>
+        <div class="info-desc">Yes, we also deliver to Metro Manila and nearby provinces.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you accept COD?</div>
+        <div class="info-desc">Yes, COD is available for selected areas.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Are your products locally made?</div>
+        <div class="info-desc">Many of our items are sourced from Filipino suppliers, supporting local craftsmanship.</div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="info-sections" id="contact">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
+        <div class="info-title">Address</div>
+        <div class="info-desc">
+          19 Sitio Liang, Jaybanga, Lobo, Batangas, 4229, Philippines
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-mail-send-line"></i></div>
+        <div class="info-title">Email</div>
+        <div class="info-desc">
+          <a href="mailto:info@glendiracollective.online">info@glendiracollective.online</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-phone-line"></i></div>
+        <div class="info-title">Phone</div>
+        <div class="info-desc">
+          <a href="tel:+639061982314">+63 906 198 2314</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-time-line"></i></div>
+        <div class="info-title">Business Hours</div>
+        <div class="info-desc">
+          Monday – Saturday: 8:00 AM – 6:00 PM<br>Sunday: Closed
+        </div>
+      </div>
+    </section>
+
+    <!-- Policy Links Section -->
+    <section class="policy-sections" id="policies">
+      <div class="policy-card">
+        <div class="policy-title">Privacy Policy</div>
+        <div class="policy-body">
+          Your privacy is important to us. We respect your information and will never share it with third parties without consent.<br><br>
+          <em>This is a placeholder. The detailed privacy policy will be available soon.</em>
+          <br><a href="privacy-policy.html">View Privacy Policy</a>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Terms of Service</div>
+        <div class="policy-body">
+          By using Glendira Glow Collective, you agree to our terms, including compliance with laws and respect for intellectual property.<br><br>
+          <em>This is a placeholder. Full terms to be published soon.</em>
+          <br><a href="terms.html">View Terms of Service</a>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Refund Policy</div>
+        <div class="policy-body">
+          Not satisfied with your purchase? We offer easy returns and exchanges for eligible products within 7 days of delivery.<br><br>
+          <em>This is a placeholder. Full refund policy coming soon.</em>
+          <br><a href="refund-policy.html">View Refund Policy</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Glendira Glow Collective Logo" />
+          Glendira Glow Collective
+        </div>
+        <div class="footer-desc">
+          19 Sitio Liang, Jaybanga, Lobo, Batangas, 4229, Philippines<br>
+          Email: <a href="mailto:info@glendiracollective.online" style="color:var(--accent);">info@glendiracollective.online</a><br>
+          Phone: <a href="tel:+639061982314" style="color:var(--accent);">+63 906 198 2314</a><br>
+          TIN: 253-017-272-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="#about" class="footer-link">About Us</a>
+          <a href="#shop" class="footer-link">Products</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="#testimonials" class="footer-link">Testimonials</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Glendira Glow Collective | TIN: 253-017-272-000<br>
+      All content &copy; 2025 Glendira Glow Collective. Proudly Filipino.
+    </div>
+  </footer>
+
+  <script>
+    // Navigation for mobile
+    const navToggle = document.getElementById('nav-toggle');
+    const navClose = document.getElementById('nav-close');
+    const navList = document.getElementById('nav-list');
+    navToggle && navToggle.addEventListener('click', () => {
+      navList.classList.add('open');
+    });
+    navClose && navClose.addEventListener('click', () => {
+      navList.classList.remove('open');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => navList.classList.remove('open'));
+    });
+
+    // Cart functionality
+    let cart = [];
+    const products = [
+      {
+        id: 1,
+        name: "Everyday T-shirt",
+        price: 199.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 2,
+        name: "Office Blazer (Women)",
+        price: 799.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 3,
+        name: "Filipiniana Dress",
+        price: 1099.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 4,
+        name: "Men's Polo Shirt",
+        price: 349.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 5,
+        name: "Teens Graphic Tee",
+        price: 239.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 6,
+        name: "A-Line Skirt",
+        price: 399.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 7,
+        name: "Kids Dress",
+        price: 299.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 8,
+        name: "Seasonal Bomber Jacket",
+        price: 899.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 9,
+        name: "Men's Cotton Shorts",
+        price: 269.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 10,
+        name: "Women's Office Dress",
+        price: 499.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 11,
+        name: "Classic Handbag",
+        price: 599.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 12,
+        name: "Minimalist Jewelry Set",
+        price: 149.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 13,
+        name: "Kids Jogger Pants",
+        price: 199.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 14,
+        name: "Women's Crop Top",
+        price: 179.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 15,
+        name: "Premium Fabric Face Mask",
+        price: 69.00,
+        img: "image/placeholder.png"
+      }
+    ];
+
+    const cartBtn = document.getElementById('cart-btn');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartCloseBtn = document.getElementById('cart-close-btn');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemsCount = document.getElementById('cart-items-count');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const cartBadge = document.getElementById('cart-badge');
+
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    cartBtn && cartBtn.addEventListener('click', openCart);
+    cartCloseBtn && cartCloseBtn.addEventListener('click', closeCart);
+    cartOverlay && cartOverlay.addEventListener('click', closeCart);
+
+    // Add to cart logic
+    document.querySelectorAll('.product-add').forEach((btn, idx) => {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.product-card');
+        const pid = parseInt(card.getAttribute('data-id'));
+        addToCart(pid);
+      });
+    });
+
+    function addToCart(productId) {
+      const prod = products.find(p => p.id === productId);
+      const itemIndex = cart.findIndex(i => i.id === productId);
+      if (itemIndex > -1) {
+        cart[itemIndex].qty += 1;
+      } else {
+        cart.push({
+          id: prod.id,
+          name: prod.name,
+          price: prod.price,
+          img: prod.img,
+          qty: 1
+        });
+      }
+      renderCart();
+    }
+
+    function increaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item) {
+        item.qty += 1;
+        renderCart();
+      }
+    }
+
+    function decreaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item && item.qty > 1) {
+        item.qty -= 1;
+        renderCart();
+      }
+    }
+
+    function removeItem(productId) {
+      cart = cart.filter(i => i.id !== productId);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div style="text-align:center;color:#aaa;font-size:1rem;">Your cart is empty.</div>';
+      } else {
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-details">
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-price">₱${item.price}</div>
+              <div class="cart-item-qty">
+                <button class="cart-item-qty-btn" aria-label="Decrease quantity"><i class="ri-subtract-line"></i></button>
+                <span>${item.qty}</span>
+                <button class="cart-item-qty-btn" aria-label="Increase quantity"><i class="ri-add-line"></i></button>
+                <button class="cart-item-remove" aria-label="Remove item"><i class="ri-delete-bin-6-line"></i></button>
+              </div>
+            </div>
+          `;
+          div.querySelector('.cart-item-qty-btn[aria-label="Decrease quantity"]').addEventListener('click', function() {
+            decreaseQty(item.id);
+          });
+          div.querySelector('.cart-item-qty-btn[aria-label="Increase quantity"]').addEventListener('click', function() {
+            increaseQty(item.id);
+          });
+          div.querySelector('.cart-item-remove').addEventListener('click', function() {
+            removeItem(item.id);
+          });
+          cartItemsContainer.appendChild(div);
+        });
+      }
+      const totalQty = cart.reduce((total, i) => total + i.qty, 0);
+      cartItemsCount.textContent = totalQty;
+      cartTotal.textContent = '₱' + cart.reduce((total, i) => total + i.qty * i.price, 0).toFixed(2);
+      if (totalQty > 0) {
+        cartBadge.textContent = totalQty;
+        cartBadge.style.display = 'block';
+      } else {
+        cartBadge.style.display = 'none';
+      }
+    }
+    renderCart();
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    checkoutBtn && checkoutBtn.addEventListener('click', function() {
+      localStorage.setItem('checkoutCart', JSON.stringify(cart));
+      window.location.href = "order-summary.html";
+    });
+
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    window.addEventListener('scroll', function() {
+      if(window.scrollY > 400) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    });
+    scrollTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
