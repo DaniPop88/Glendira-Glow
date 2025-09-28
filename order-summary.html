@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Summary | Glendira Glow Collective</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #8b4d1b;
+      --accent: #fcd46e;
+      --dark: #312a22;
+      --light: #faf6ee;
+      --shadow: 0 7px 30px 0 rgba(139,77,27,0.13);
+      --radius: 1.4rem;
+      --error: #d21f3c;
+      --success: #157347;
+    }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.7;
+      transition: background 0.4s;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color .22s;
+    }
+    a:hover { color: var(--accent); }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: .7rem;
+    }
+    .header {
+      width: 100%;
+      background: rgba(255,255,255,0.96);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      backdrop-filter: blur(7px);
+      transition: background .3s;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.15rem 2.1rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      font-family: 'Playfair Display', serif;
+    }
+    .nav-logo img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px 0 rgba(139,77,27,0.08);
+    }
+    .main-container {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 2.2rem 1.2rem 2.6rem;
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: 3.8rem;
+      margin-bottom: 2.3rem;
+    }
+    .summary-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.8px;
+      text-align: center;
+    }
+    .summary-desc {
+      font-size: 1.08rem;
+      color: #7a4f2e;
+      margin-bottom: 1.6rem;
+      text-align: center;
+    }
+    .order-section {
+      margin-bottom: 2.2rem;
+      background: #fffbe6;
+      padding: 1.3rem 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px 0 rgba(252,212,110,0.08);
+    }
+    .order-section-title {
+      font-size: 1.17rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: .6rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .order-items {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    .order-items th, .order-items td {
+      padding: .7rem .5rem;
+      text-align: left;
+      font-size: 1.03rem;
+    }
+    .order-items th {
+      color: var(--primary);
+      border-bottom: 2px solid var(--accent);
+      font-weight: 900;
+    }
+    .order-items td {
+      border-bottom: 1px solid #fceabb;
+    }
+    .order-total-row th, .order-total-row td {
+      border-bottom: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .form-section {
+      margin-bottom: 2.3rem;
+      background: #f7efe2;
+      padding: 1.2rem 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px 0 rgba(139,77,27,0.07);
+    }
+    .form-section-title {
+      font-size: 1.13rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: .58rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+    label {
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: .18rem;
+      display: block;
+      font-size: 1.02rem;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      padding: .6rem .9rem;
+      width: 100%;
+      border: 1px solid #e5d6b5;
+      border-radius: .55rem;
+      background: #fff;
+      font-size: 1rem;
+      margin-top: .15rem;
+      font-family: inherit;
+      transition: border .2s;
+      resize: vertical;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    select:focus,
+    textarea:focus {
+      border: 1.5px solid var(--primary);
+      outline: none;
+    }
+    .submit-btn {
+      background: var(--primary);
+      color: var(--light);
+      font-weight: 900;
+      font-size: 1.13rem;
+      border-radius: .7rem;
+      padding: .85rem 2.2rem;
+      cursor: pointer;
+      border: none;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 12px 0 rgba(139,77,27,0.12);
+      margin-top: .3rem;
+      display: block;
+      width: 100%;
+    }
+    .submit-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .confirmation-message {
+      background: #e6fbe9;
+      border: 1.5px solid var(--success);
+      color: var(--success);
+      padding: 1.3rem 1rem;
+      border-radius: 1rem;
+      margin-top: 2.3rem;
+      box-shadow: 0 2px 8px 0 rgba(21,115,71,0.07);
+      font-size: 1.08rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn .7s ease;
+    }
+    .confirmation-message.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(24px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .footer {
+      background: var(--dark);
+      color: var(--light);
+      padding: 2.1rem 0 1rem;
+      margin-top: 2.4rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -40px;
+      width: 320px;
+      height: 320px;
+      opacity: 0.13;
+      background: url('image/LOGO.png') no-repeat center center/contain;
+      z-index: 0;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-brand {
+      flex: 1 1 230px;
+      margin-bottom: 1.8rem;
+      z-index: 2;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.13rem;
+      font-weight: 900;
+      gap: .53rem;
+      margin-bottom: 0.42rem;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+    .footer-logo img {
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+    }
+    .footer-desc {
+      color: #fcd46e;
+      font-size: 1.01rem;
+      margin-bottom: .57rem;
+    }
+    .footer-links-group {
+      flex: 1 1 160px;
+      margin-bottom: 1.7rem;
+      z-index: 2;
+    }
+    .footer-links-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: .32rem;
+      letter-spacing: .5px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .footer-link {
+      color: #ffe9bd;
+      font-size: .99rem;
+      transition: color .2s;
+      opacity: .92;
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      text-align: center;
+      font-size: .97rem;
+      color: #ffe9bd;
+      margin-top: 1.3rem;
+      opacity: .86;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-bottom a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      transition: color .2s;
+    }
+    .footer-bottom a:hover { color: var(--accent); }
+    @media (max-width: 850px) {
+      .main-container { margin-top: 2.5rem; }
+    }
+    @media (max-width: 700px) {
+      .main-container { margin-top: 1.2rem; padding: 1.2rem .6rem 1.8rem; }
+      .footer-container { padding: 0 1.2rem; }
+      .order-section, .form-section { padding: .8rem .3rem; }
+    }
+    @media (max-width: 600px) {
+      .main-container { margin-top: .8rem; }
+      .footer { padding: 1.11rem 0 .89rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Glendira Glow Collective Logo" />
+        Glendira Glow Collective
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="main-container" id="main-container">
+      <h1 class="summary-title">Review Your Order</h1>
+      <div class="summary-desc">
+        Please take a moment to review your chosen items below. After making sure all details are correct, provide your contact and delivery information to continue.<br>
+        Our team will personally reach out to you to confirm product details, colors, and availability before sending your payment instructions.
+      </div>
+      <section class="order-section">
+        <div class="order-section-title">Your Selected Items</div>
+        <table class="order-items" id="order-items">
+          <thead>
+            <tr>
+              <th style="width:38%">Product</th>
+              <th style="width:15%">Qty</th>
+              <th style="width:20%">Price</th>
+              <th style="width:27%">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will populate order items here -->
+          </tbody>
+          <tfoot>
+            <tr class="order-total-row">
+              <th colspan="3" style="text-align:right;">Order Total</th>
+              <td id="order-total">₱0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div style="color:#7a4f2e;font-size:.98rem;">
+          <i class="ri-information-line" style="color:var(--primary)"></i>
+          Shipping fees (if applicable) will be calculated and confirmed during our follow-up.
+        </div>
+      </section>
+      <form class="form-section" id="checkout-form" autocomplete="on">
+        <div class="form-section-title">Delivery and Contact Information</div>
+        <div class="form-group">
+          <label for="name">Full Name<span style="color:var(--error);margin-left:2px;">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Your full name" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Mobile Number<span style="color:var(--error);margin-left:2px;">*</span></label>
+          <input type="tel" id="phone" name="phone" required placeholder="09XX-XXX-XXXX" autocomplete="tel" pattern="^(09|\+639)\d{9}$" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address<span style="color:var(--error);margin-left:2px;">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address<span style="color:var(--error);margin-left:2px;">*</span></label>
+          <textarea id="address" name="address" required rows="2" placeholder="Street name, Barangay, Municipality/City, Province, ZIP" autocomplete="street-address"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="payment">Preferred Payment Method<span style="color:var(--error);margin-left:2px;">*</span></label>
+          <select id="payment" name="payment" required>
+            <option value="" disabled selected>Select payment method</option>
+            <option value="gcash">GCash</option>
+            <option value="bank">Bank Transfer</option>
+            <option value="cod">Cash on Delivery (COD) - Selected Areas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="note">Order Notes (Optional)</label>
+          <textarea id="note" name="note" rows="2" placeholder="Requests (color, size, delivery instructions, etc.)"></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">
+          Submit Order
+        </button>
+      </form>
+      <div class="confirmation-message" id="confirmation-message">
+        <span style="font-size:1.35rem;display:block;margin-bottom:.7rem;"><i class="ri-checkbox-circle-line"></i> Order Received!</span>
+        Thank you for choosing Glendira Glow Collective.<br><br>
+        A member of our team will soon reach out via call or message to verify your order details, confirm product availability, and discuss preferences such as color and size.<br><br>
+        <b>Once details are confirmed, you will receive a secure payment link based on your selected payment method.</b><br>
+        <span style="color:var(--primary);font-weight:700;">Please ensure payment is completed within <u>24 hours</u> of receiving the link to avoid automatic cancellation.</span>
+        <br><br>
+        If you have any questions, feel free to contact us at <a href="mailto:info@glendiracollective.online">info@glendiracollective.online</a> or <a href="tel:+639061982314">+63 906 198 2314</a>.<br>
+        <br>
+        We appreciate your trust and look forward to serving you!
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Glendira Glow Collective Logo" />
+          Glendira Glow Collective
+        </div>
+        <div class="footer-desc">
+          19 Sitio Liang, Jaybanga, Lobo, Batangas, 4229, Philippines<br>
+          Email: <a href="mailto:info@glendiracollective.online" style="color:var(--accent);">info@glendiracollective.online</a><br>
+          Phone: <a href="tel:+639061982314" style="color:var(--accent);">+63 906 198 2314</a><br>
+          TIN: 253-017-272-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="index.html#about" class="footer-link">About Us</a>
+          <a href="index.html#shop" class="footer-link">Products</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="index.html#testimonials" class="footer-link">Testimonials</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Glendira Glow Collective | TIN: 253-017-272-000<br>
+      All content &copy; 2025 Glendira Glow Collective. Proudly Filipino.
+    </div>
+  </footer>
+
+  <script>
+    // Fill order table from localStorage 'checkoutCart'
+    const products = [
+      {
+        id: 1,
+        name: "Everyday T-shirt",
+        price: 199.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 2,
+        name: "Office Blazer (Women)",
+        price: 799.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 3,
+        name: "Filipiniana Dress",
+        price: 1099.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 4,
+        name: "Men's Polo Shirt",
+        price: 349.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 5,
+        name: "Teens Graphic Tee",
+        price: 239.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 6,
+        name: "A-Line Skirt",
+        price: 399.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 7,
+        name: "Kids Dress",
+        price: 299.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 8,
+        name: "Seasonal Bomber Jacket",
+        price: 899.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 9,
+        name: "Men's Cotton Shorts",
+        price: 269.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 10,
+        name: "Women's Office Dress",
+        price: 499.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 11,
+        name: "Classic Handbag",
+        price: 599.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 12,
+        name: "Minimalist Jewelry Set",
+        price: 149.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 13,
+        name: "Kids Jogger Pants",
+        price: 199.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 14,
+        name: "Women's Crop Top",
+        price: 179.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 15,
+        name: "Premium Fabric Face Mask",
+        price: 69.00,
+        img: "image/placeholder.png"
+      }
+    ];
+    function renderOrderItems() {
+      const tbody = document.querySelector('#order-items tbody');
+      tbody.innerHTML = '';
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem('checkoutCart')) || [];
+      } catch { cart = []; }
+      let total = 0;
+      if (cart.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#999;">No products in cart. <a href="index.html#shop">Return to shop</a></td></tr>`;
+        document.getElementById('order-total').textContent = '₱0.00';
+      } else {
+        cart.forEach(item => {
+          const product = products.find(p => p.id === item.id) || {};
+          const row = document.createElement('tr');
+          const price = product.price || item.price || 0;
+          const subtotal = price * item.qty;
+          total += subtotal;
+          row.innerHTML = `
+            <td>
+              <span style="font-weight:700;">${product.name || item.name}</span>
+            </td>
+            <td>${item.qty}</td>
+            <td>₱${price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+            <td>₱${subtotal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+          `;
+          tbody.appendChild(row);
+        });
+        document.getElementById('order-total').textContent = '₱' + total.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      }
+    }
+    renderOrderItems();
+
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // Form submission & confirmation
+    const checkoutForm = document.getElementById('checkout-form');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    checkoutForm && checkoutForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Optionally: Validate again if needed
+      checkoutForm.style.display = 'none';
+      confirmationMessage.classList.add('active');
+      // Optionally: clear cart in localStorage
+      localStorage.removeItem('checkoutCart');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
